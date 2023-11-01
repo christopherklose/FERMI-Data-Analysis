@@ -298,21 +298,21 @@ class AzimuthalIntegrationCenter:
         
         
 class InteractiveCircleCoordinates:
-    """Fi holographically-aided, iterative phase retrieval."""
+    """For drawing of circles, i.e., phase retrieval mask."""
 
-    def __init__(self, im, nr_circ, support_coordinates="None", **kwargs):
+    def __init__(self, im, nr_circ, coordinates="None", **kwargs):
         # Display image
         im = np.array(im)
-        self.fig, self.ax = cimshow(im, cmap="gray", **kwargs)
+        self.fig, self.ax = cimshow(im, **kwargs)
         self.mm = self.ax.get_images()[0]
 
         # Create list of aperture coordinates
-        if support_coordinates == "None":
+        if coordinates == "None":
             self.c_yxr = []
             for i in range(nr_circ):
                 self.c_yxr.append([im.shape[-2] // 2, im.shape[-1] // 2, 15])
         else:
-            self.c_yxr = support_coordinates
+            self.c_yxr = coordinates
 
         # Draw circles
         self.circles = []
@@ -340,8 +340,8 @@ class InteractiveCircleCoordinates:
         # Create circle widget sliders
         label = ["yc", "xc", "r0"]
         width = ["600px", "600px", "500px"]
-        mi = [im.shape[-2] // 2 - im.shape[-2] // 2, im.shape[-2] // 2 - im.shape[-2] // 2, 0]
-        ma = [im.shape[-2] // 2 + im.shape[-2] // 2, im.shape[-2] // 2 + im.shape[-2] // 2, im.shape[-2] // 10]
+        mi = [0, 0, 0]
+        ma = [2*im.shape[-2], 2*im.shape[-1], 2*np.max([im.shape[-2],im.shape[-1]])]
         w = [
             ipywidgets.FloatSlider(
                 value=self.c_yxr[0][k],
@@ -517,7 +517,7 @@ class draw_polygon_mask:
         )
 
     def create_polygon_mask(self, shape, coordinates):
-        x, y = np.meshgrid(np.arange(shape[0]), np.arange(shape[1]))
+        x, y = np.meshgrid(np.arange(shape[1]), np.arange(shape[0]))
         x, y = x.flatten(), y.flatten()
 
         points = np.vstack((x, y)).T
