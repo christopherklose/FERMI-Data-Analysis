@@ -128,6 +128,23 @@ def cimshow(im, **kwargs):
     return fig, ax
 
 
+def adjust_contrast(axis):
+    """Change contrast of image displayed in axis."""
+    img = axis.images[-1]
+    vmin, vmax = img.get_clim()
+    sl_contrast = ipywidgets.FloatRangeSlider(
+        value=(vmin, vmax),
+        min=img.get_array().min(),
+        max=img.get_array().max(),
+        step=(vmax - vmin) / 500,
+        layout=ipywidgets.Layout(width="500px"),
+    )
+
+    @ipywidgets.interact(contrast=sl_contrast)
+    def update(contrast):
+        img.set_clim(contrast)
+
+
 class InteractiveCenter:
     """Plot image with controls for contrast and beamstop alignment tools."""
     def __init__(self, im, c0=None, c1=None, rBS=15, **kwargs):
