@@ -36,6 +36,7 @@ mnemonics = dict(
     gatt='DPI/Attenuator',
     image='image/tucam_integrate',
     image_full_rate='image/tucam_full_rate',
+    image_decimate='image/tucam_decimate',
     delay='DPI/DelayLine',
     delay_ACDC='photon_diagnostics/Delay_Line/Delay',
     alignz='DPI/AlignZ',
@@ -134,64 +135,71 @@ def get_exp_dataframe(folder, recursive=True, keys={}):
     return exp
 
 
-
-def loadh5(filename, extra_keys={}, ccd=True, on_error='pass', full_rate=False):
-    '''
+def loadh5(filename, extra_keys={}, ccd=True, raise_on_error=False, roi=None):
+    """
     Loads CCD image and bunch energy E_tot(µJ).
-    
+
     Parameters
     ==========
     filename : str
         hdf file path/name
-       
+
     extra_keys : list or dict, optional
         list of mnmemonics or hdf data paths
-       
+
     ccd : boolean, optional (default True)
         whether to return the CCD image
-    
-    on_error : str, optional (default 'pass')
-        ignore KeyErrors in hdf file ('raise', default) or throw error ('raise')
-        
+
+    raise_on_error : bool, optional (default False)
+        If True, skip over missing entries in hdf file.
+
+    roi : slice_expression, optional
+        If given, used to slice image data. Return full image array if None (default)
+
     Returns
     =======
     image : np.array
         the CCD image (only if ccd=True)
-    
+
     meta : dict
         non-image data
-    
+
     Notes
     =====
     FERMI's GMD is upstream of the last filter (seed filter). The shot-energy
     needs to be corrected for the filter transmission at the experiment's
     wavelength.
-    '''
+    """
     meta = {}
     if isinstance(extra_keys, list):
         extra_keys = {k: k for k in extra_keys}
-    with h5py.File(filename, 'r') as h5file:
+    with h5py.File(filename, "r") as h5file:
         if ccd:
-            if full_rate:
-                image = h5file[mnemonics['image_full_rate']][()].astype(float)
+            roi = () if roi is None else roi
+            image_keys = ["image", "image_full_rate", "image_decimate"]
+            for key in image_keys:
+                if mnemonics[key] in h5file:
+                    image = h5file[mnemonics[key]][roi]  # .astype(np.float16)
+                    print(f"Using image entry {key}.")
+                    break
             else:
-                image = h5file[mnemonics['image']][()].astype(float)
+                raise ValueError(f"No image entry found {image_keys}")
+
         for k, v in extra_keys.items():
             try:
                 h5path = mnemonics[v] if v in mnemonics else v
                 meta.update({k: h5file[h5path][()]})
-            except KeyError:
-                meta.update({k: np.nan})
-                if on_error == 'raise':
+            except KeyError as exc:
+                if raise_on_error:
                     raise
-                elif on_error == 'pass':
-                    pass
                 else:
-                    print('Error reading key ', key, ' - skipping.')
+                    meta.update({k: np.nan})
+                    print(f"Error reading {key}: {exc} - skipping.")
     if ccd:
         return image, meta
     else:
         return meta
+
 
 def load_image_diodenorm(fname, dark, normkey = 'PAM/FQPDSum', full_rate=False):
     '''
