@@ -36,6 +36,7 @@ mnemonics = dict(
     gatt='DPI/Attenuator',
     image='image/tucam_integrate',
     image_full_rate='image/tucam_full_rate',
+    image_decimate='image/tucam_decimate',
     delay='DPI/DelayLine',
     delay_ACDC='photon_diagnostics/Delay_Line/Delay',
     alignz='DPI/AlignZ',
