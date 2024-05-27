@@ -2,24 +2,34 @@ import numpy as np
 from matplotlib.path import Path
 from scipy.ndimage.filters import gaussian_filter
 
-# Is there a GPU?
-try:
-    # Cupy
-    import cupy as cp
-    import cupyx as cpx
 
-    GPU = True
-
-    print("GPU available")
-
-    # Self-written library
-    import CCI_core_cupy as cci
-except:
-    GPU = False
-    import CCI_core as cci
-
-    print("GPU unavailable")
+def shift_image(image,shift):
+    '''
+    Shifts image with sub-pixel precission via Fourier space
     
+    
+    Parameters
+    ----------
+    image: array
+        Moving image, will be shifted by shift vector
+        
+    shift: vector
+        x and y translation in px
+    
+    Returns
+    -------
+    image_shifted: array
+        Shifted image
+    -------
+    author: CK 2021
+    '''
+    
+    #Shift Image
+    shift_image = fourier_shift(scp.fft.fft2(image,workers=-1), shift)
+    shift_image = scp.fft.ifft2(shift_image,workers=-1)
+    shift_image = shift_image.real
+
+    return shift_image
     
 #Draw circle mask
 def circle_mask(shape,center,radius,sigma=None):
@@ -250,7 +260,7 @@ def auto_shift_mask(
     )
 
     # Shift
-    mask_shifted = cci.shift_image(mask, optimized_shift)
+    mask_shifted = shift_image(mask, optimized_shift)
 
     # Binarize mask (necessary for sub-px shift)
     mask_shifted[mask_shifted > 0.5] = 1

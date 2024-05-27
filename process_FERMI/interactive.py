@@ -103,7 +103,7 @@ def cimshow(im, **kwargs):
     Returns matplotlib figure and axis created.
     """
     im = np.array(im).astype("float")
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(6,6))
     im0 = im[0] if len(im.shape) == 3 else im
     mm = ax.imshow(im0, **kwargs)
 
@@ -303,8 +303,8 @@ class AzimuthalIntegrationCenter:
         for qt in self.qlines:
             self.ax[2].axvline(qt, ymin=0, ymax=360, c="red")
 
-        w_c0 = ipywidgets.FloatSlider(value=c0,min=im.shape[-2]/2-np.round(im.shape[-2]/6),max=im.shape[-2]/2+np.round(im.shape[-2]/6),step=.5, description="y-center",layout=ipywidgets.Layout(width="500px"))
-        w_c1 = ipywidgets.FloatSlider(value=c1,min=im.shape[-1]/2-np.round(im.shape[-1]/6),max=im.shape[-1]/2+np.round(im.shape[-1]/6),step=.5, description="x-center",layout=ipywidgets.Layout(width="500px"))
+        w_c0 = ipywidgets.FloatSlider(value=c0,min=im.shape[-2]/2-np.round(im.shape[-2]/2),max=im.shape[-2]/2+np.round(im.shape[-2]/2),step=.5, description="y-center",layout=ipywidgets.Layout(width="500px"))
+        w_c1 = ipywidgets.FloatSlider(value=c1,min=im.shape[-1]/2-np.round(im.shape[-1]/2),max=im.shape[-1]/2+np.round(im.shape[-1]/2),step=.5, description="x-center",layout=ipywidgets.Layout(width="500px"))
 
         ipywidgets.interact(self.update, c0=w_c0, c1=w_c1)
 
