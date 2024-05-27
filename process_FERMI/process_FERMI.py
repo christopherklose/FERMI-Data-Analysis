@@ -49,6 +49,16 @@ mnemonics = dict(
     comment='ExperimentalComments',
 )
 
+def create_folder(folder):
+    """
+    Creates input folder if it does not exist yet
+    """
+
+    if not (os.path.exists(folder)):
+        print("Creating folder " + folder)
+        os.makedirs(folder)
+    return folder
+
 ### glob files
 def findfile(basefolder, membrane, bunchid):
     '''
