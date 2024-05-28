@@ -20,6 +20,9 @@ from matplotlib.widgets import PolygonSelector
 from matplotlib.path import Path
 
 import ipywidgets
+import ipywidgets as widgets
+
+import skimage.morphology
 
 import pyFAI
 from pyFAI.azimuthalIntegrator import AzimuthalIntegrator
@@ -50,8 +53,8 @@ def shift_image(image,shift):
     '''
     
     #Shift Image
-    shift_image = fourier_shift(scp.fft.fft2(image,workers=-1), shift)
-    shift_image = scp.fft.ifft2(shift_image,workers=-1)
+    shift_image = fourier_shift(sp.fft.fft2(image,workers=-1), shift)
+    shift_image = sp.fft.ifft2(shift_image,workers=-1)
     shift_image = shift_image.real
 
     return shift_image
