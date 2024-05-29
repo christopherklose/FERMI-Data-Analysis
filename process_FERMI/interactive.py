@@ -306,8 +306,8 @@ class AzimuthalIntegrationCenter:
         for qt in self.qlines:
             self.ax[2].axvline(qt, ymin=0, ymax=360, c="red")
 
-        w_c0 = ipywidgets.FloatSlider(value=c0,min=im.shape[-2]/2-np.round(im.shape[-2]/2),max=im.shape[-2]/2+np.round(im.shape[-2]/2),step=.5, description="y-center",layout=ipywidgets.Layout(width="500px"))
-        w_c1 = ipywidgets.FloatSlider(value=c1,min=im.shape[-1]/2-np.round(im.shape[-1]/2),max=im.shape[-1]/2+np.round(im.shape[-1]/2),step=.5, description="x-center",layout=ipywidgets.Layout(width="500px"))
+        w_c0 = ipywidgets.FloatSlider(value=c0,min=im.shape[-2]/2-np.round(im.shape[-2]),max=im.shape[-2]/2+np.round(im.shape[-2]),step=.5, description="y-center",layout=ipywidgets.Layout(width="500px"))
+        w_c1 = ipywidgets.FloatSlider(value=c1,min=im.shape[-1]/2-np.round(im.shape[-1]),max=im.shape[-1]/2+np.round(im.shape[-1]),step=.5, description="x-center",layout=ipywidgets.Layout(width="500px"))
 
         ipywidgets.interact(self.update, c0=w_c0, c1=w_c1)
 
@@ -394,7 +394,7 @@ class InteractiveCircleCoordinates:
         # Create circle widget sliders
         label = ["yc", "xc", "r0"]
         width = ["600px", "600px", "500px"]
-        mi = [0, 0, 0]
+        mi = [-2*im.shape[-2], -2*im.shape[-2], 0]
         ma = [2*im.shape[-2], 2*im.shape[-1], 2*np.max([im.shape[-2],im.shape[-1]])]
         w = [
             ipywidgets.FloatSlider(
