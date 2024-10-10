@@ -190,7 +190,7 @@ def loadh5(filename, extra_keys={}, ccd=True, raise_on_error=False, roi=None):
             for key in image_keys:
                 if mnemonics[key] in h5file:
                     image = h5file[mnemonics[key]][roi].astype(np.float16)
-                    print(f"Using image entry {key}.")
+                    #print(f"Using image entry {key}.")
                     break
             else:
                 errormsg = f"No image entry found {image_keys}"

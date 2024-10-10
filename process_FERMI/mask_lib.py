@@ -1,6 +1,7 @@
 import numpy as np
 from matplotlib.path import Path
 from scipy.ndimage.filters import gaussian_filter
+from skimage.draw import ellipse
 
 
 def shift_image(image,shift):

@@ -9,6 +9,7 @@ import sys, os
 import numpy as np
 import matplotlib.pyplot as plt
 from wand.image import Image
+import scipy
 
 #=====================
 #Paths and directories
@@ -193,6 +194,37 @@ def create_gif(image_filenames, output_gif,fps = 1,loop = 0):
         # Save the images as a GIF
         img.save(filename=output_gif)
 
+#======================
+#Physics
+#======================
+#photon energy - wavelength converter
+def photon_energy_wavelength(value, input_unit = 'eV'):
+    '''
+    Converts photon energy to wavelength and vice vera
+    
+    Parameter
+    =========
+    value : scalar
+        input value either in eV or nm
+    unit : string
+        Select input unit. Currently either nm or eV is supported
+        
+    Output
+    ======
+    lambda_Xray or energy_Xray: scalar
+        Converted unit  
+    ======
+    author: ck 2023
+    '''    
+
+    if input_unit == 'eV':
+        lambda_Xray = scipy.constants.h*scipy.constants.c/(value*scipy.constants.e)
+        return lambda_Xray
+    elif input_unit == 'nm':
+        energy_Xray = scipy.constants.h*scipy.constants.c/(value*10**(-9)*scipy.constants.e)
+        return energy_Xray
+
 #=========================
 # Other
 #=========================
+
