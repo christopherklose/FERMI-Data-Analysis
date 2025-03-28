@@ -39,7 +39,7 @@ mnemonics = dict(
     image_decimate='image/tucam_decimate',
     delay='DPI/DelayLine',
     delay_ACDC='photon_diagnostics/Delay_Line/Delay',
-    alignz='DPI/AlignZ',
+    alignz='DPI/AlignZm',
     IR='Laser/Energy1',
     ccdz='DPI/CCDZ',
     ccd_rot='DPI/CCDTheta',
@@ -48,6 +48,16 @@ mnemonics = dict(
     valve_dpi3='FEL/ValveDPI3',
     comment='ExperimentalComments',
 )
+
+def create_folder(folder):
+    """
+    Creates input folder if it does not exist yet
+    """
+
+    if not (os.path.exists(folder)):
+        print("Creating folder " + folder)
+        os.makedirs(folder)
+    return folder
 
 ### glob files
 def findfile(basefolder, membrane, bunchid):
@@ -180,7 +190,7 @@ def loadh5(filename, extra_keys={}, ccd=True, raise_on_error=False, roi=None):
             for key in image_keys:
                 if mnemonics[key] in h5file:
                     image = h5file[mnemonics[key]][roi].astype(np.float16)
-                    print(f"Using image entry {key}.")
+                    #print(f"Using image entry {key}.")
                     break
             else:
                 errormsg = f"No image entry found {image_keys}"
