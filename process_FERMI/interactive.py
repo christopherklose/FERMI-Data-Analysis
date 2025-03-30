@@ -238,7 +238,7 @@ def intensity_scale(im1, im2, mask=None):
 class AzimuthalIntegrationCenter:
     """Plot image with controls for contrast and center alignment tools."""
 
-    def __init__(self, im, ai, c0=None, c1=None, mask=None,circle_radius=100,**kwargs):
+    def __init__(self, im, ai, c0=None, c1=None, mask=None,circle_radius=100, poni**kwargs):
         # User Feedback/Instructions
         print("Left: 1d azimuthal Integration I(q)")
         print("Right: 2d azimuthal Integration I(q,chi)")
