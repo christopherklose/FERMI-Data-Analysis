@@ -192,11 +192,12 @@ def loadh5(filename, extra_keys={}, ccd=True, raise_on_error=False, roi=None):
                     image = h5file[mnemonics[key]][roi].astype(np.float16)
                     #print(f"Using image entry {key}.")
                     break
-            else:
-                errormsg = f"No image entry found {image_keys}"
-                print(errormsg)
-                if raise_on_error:
-                    raise
+                else:
+                    errormsg = f"No image entry found {key}, File: {filename}"
+                    print(errormsg)
+                    if raise_on_error:
+                        raise
+                    image = np.array(np.nan)
 
         for k, v in extra_keys.items():
             try:
