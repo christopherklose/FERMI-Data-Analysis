@@ -38,6 +38,7 @@ mnemonics = dict(
     image_full_rate='image/tucam_full_rate',
     image_decimate='image/tucam_decimate',
     delay='DPI/DelayLine',
+    delay_2 = "Laser/SeedDel8",
     delay_ACDC='photon_diagnostics/Delay_Line/Delay',
     alignz='DPI/AlignZm',
     IR='Laser/Energy1',
