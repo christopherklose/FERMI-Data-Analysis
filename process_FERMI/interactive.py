@@ -232,13 +232,13 @@ def intensity_scale(im1, im2, mask=None):
         for p, v in zip(patches, hist):
             p.set_height(v)
     return fig, ax
-    
-    
-    
+
+
 class AzimuthalIntegrationCenter:
     """Plot image with controls for contrast and center alignment tools."""
 
-    def __init__(self, im, ai, c0=None, c1=None, mask=None,circle_radius=100, poni**kwargs):
+    #def __init__(self, im, ai, c0=None, c1=None, mask=None,circle_radius=100, poni,**kwargs):
+    def __init__(self, im, ai, c0=None, c1=None, mask=None,circle_radius=100, poni1 = 0,poni2=0,rot2=0,**kwargs):
         # User Feedback/Instructions
         print("Left: 1d azimuthal Integration I(q)")
         print("Right: 2d azimuthal Integration I(q,chi)")
@@ -261,6 +261,9 @@ class AzimuthalIntegrationCenter:
         self.pixel_size2 = ai.detector.get_pixel2()
         self.qlines = kwargs["qlines"]
         self.ai = ai
+        self.ai.poni1 = poni1
+        self.ai.poni2 = poni2
+        self.ai.rot2 = rot2
         self.mask = mask
 
         # Calc azimuthal integration

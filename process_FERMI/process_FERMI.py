@@ -189,7 +189,7 @@ def loadh5(filename, extra_keys={}, ccd=True, raise_on_error=False, roi=None):
             image_keys = ["image", "image_full_rate", "image_decimate"]
             for key in image_keys:
                 if mnemonics[key] in h5file:
-                    image = h5file[mnemonics[key]][roi].astype(np.float16)
+                    image = h5file[mnemonics[key]][roi].astype(np.float32)
                     #print(f"Using image entry {key}.")
                     break
                 else:
